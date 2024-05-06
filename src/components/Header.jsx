@@ -1,8 +1,8 @@
 function Header() {
   return (
     <header className="flex items-center justify-between gap-4 p-4">
-      <h1>
-        Nu<span className="text-blue-400">Scribe</span>
+      <h1 className="font-medium">
+        Nu<span className="text-blue-400 bold">Scribe</span>
       </h1>
       <button className="flex items-center gap-2">
         <p>New</p>
