@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function HomePage() {
+function HomePage({ setFile, setAudioStream }) {
   const [recordingStatus, setRecordingStatus] = useState("inactive");
 
   async function startRecording() {}
@@ -39,7 +39,10 @@ function HomePage() {
         <label className="text-blue-400 cursor-pointer hover:text-blue-600 duration-200">
           upload{" "}
           <input
-            onChange={() => {}}
+            onChange={(e) => {
+              const tempFile = e.target.files[0];
+              setFile(tempFile);
+            }}
             className="hidden"
             type="file"
             accept=".mp3,.wav"
