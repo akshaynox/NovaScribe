@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-function HomePage({ setFile, setAudioStream }) {
+function HomePage({ setAudioStream, setFile }) {
   const [recordingStatus, setRecordingStatus] = useState("inactive");
   const [audioChunks, setAudioChunks] = useState([]);
   const [duration, setDuration] = useState(0);
@@ -71,7 +71,7 @@ function HomePage({ setFile, setAudioStream }) {
   return (
     <main className="flex-1  p-4 flex flex-col gap-3 text-center sm:gap-4  justify-center pb-20">
       <h1 className="font-semibold text-5xl sm:text-6xl md:text-7xl">
-        Nu<span className="text-blue-400 bold">Scribe</span>
+        Free<span className="text-blue-400 bold">Scribe</span>
       </h1>
       <h3 className="font-medium md:text-lg">
         Record <span className="text-blue-400">&rarr;</span> Transcribe{" "}
@@ -87,6 +87,7 @@ function HomePage({ setFile, setAudioStream }) {
           {recordingStatus === "inactive" ? "Record" : `Stop recording`}
         </p>
         <div className="flex items-center gap-2">
+          {duration !== 0 && <p className="text-sm">{duration}s</p>}
           <i
             className={
               "fa-solid duration-200 fa-microphone " +
@@ -109,9 +110,8 @@ function HomePage({ setFile, setAudioStream }) {
             accept=".mp3,.wav"
           />
         </label>{" "}
-        an mp3/wav file
+        an mp3 file
       </p>
-      {/* <p className="italic text-slate-400"> </p> */}
     </main>
   );
 }
