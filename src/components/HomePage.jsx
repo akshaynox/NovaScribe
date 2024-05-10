@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 function HomePage({ setFile, setAudioStream }) {
   const [recordingStatus, setRecordingStatus] = useState("inactive");
@@ -43,7 +43,30 @@ function HomePage({ setFile, setAudioStream }) {
     setAudioChunks(localAudioChunks);
   }
 
-  async function stopRecording() {}
+  async function stopRecording() {
+    setRecordingStatus("inactive");
+    console.log("Stop recording");
+
+    mediaRecorder.current.stop();
+    mediaRecorder.current.onstop = () => {
+      const audioBlob = new Blob(audioChunks, { type: mimeType });
+      setAudioStream(audioBlob);
+      setAudioChunks([]);
+      setDuration(0);
+    };
+  }
+
+  useEffect(() => {
+    if (recordingStatus === "inactive") {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setDuration((curr) => curr + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  });
 
   return (
     <main className="flex-1  p-4 flex flex-col gap-3 text-center sm:gap-4  justify-center pb-20">
