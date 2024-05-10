@@ -1,9 +1,47 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 function HomePage({ setFile, setAudioStream }) {
   const [recordingStatus, setRecordingStatus] = useState("inactive");
+  const [audioChunks, setAudioChunks] = useState([]);
+  const [duration, setDuration] = useState(0);
 
-  async function startRecording() {}
+  const mediaRecorder = useRef(null);
+
+  const mimeType = "audio/webm";
+
+  async function startRecording() {
+    let tempStream;
+    console.log("Start recording");
+
+    try {
+      const streamData = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: false,
+      });
+      tempStream = streamData;
+    } catch (err) {
+      console.log(err.message);
+      return;
+    }
+    setRecordingStatus("recording");
+
+    //create new Media recorder instance using the stream
+    const media = new MediaRecorder(tempStream, { type: mimeType });
+    mediaRecorder.current = media;
+
+    mediaRecorder.current.start();
+    let localAudioChunks = [];
+    mediaRecorder.current.ondataavailable = (event) => {
+      if (typeof event.data === "undefined") {
+        return;
+      }
+      if (event.data.size === 0) {
+        return;
+      }
+      localAudioChunks.push(event.data);
+    };
+    setAudioChunks(localAudioChunks);
+  }
 
   async function stopRecording() {}
 
