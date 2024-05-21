@@ -1,5 +1,3 @@
-export default function Transcription(props) {
-  const { textElement } = props;
-
+export default function Transcription({ textElement }) {
   return <div>{textElement}</div>;
 }
